@@ -38,3 +38,5 @@ VALUES (9, "skittles", "candy", 2, 846);
 
 INSERT INTO products (item_id, product_name, department_name, price, stock_quantity)
 VALUES (10, "Twix", "candy", 1, 235);
+
+SELECT*FROM products;
