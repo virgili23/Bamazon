@@ -63,11 +63,14 @@ function displayInfo() {
 
             if (response.length === 0) {
                 console.log("ERROR: Please select a valid Item ID from the Products Table");
+                console.log("");
                 displayTable();
             } else {
                 var productRes = response[0];
                 if (quantity2 <= productRes.stock_quantity) {
-                    console.log("Your product is available for purchase! We are now placing your order...");
+                    console.log("Your product is available for purchase! We are now placing your order!");
+                    console.log("Please wait...");
+                    console.log("");
 
                     // Updating inventory
 
@@ -77,16 +80,42 @@ function displayInfo() {
                      connection.query(updateInventory, function(err, data) {
                          if (err) throw err;
 
+                         console.log("");
                          console.log("Your order has been placed; your total is $" 
                         + productRes.price * quantity2);
+                        console.log("");
                         console.log("Thank you for shopping at Candy Land! Enjoy your delicious treats!");
-                        // keepShopping();
+                        console.log("");
+                        keepShopping();
                      })
                 } else {
-                    console.log("Our appologies, but the item you requested is not in stock! :(\n");
-                    // keepShopping();
+                    console.log("Our appologies, but there aren't enough of this item in stock for you to buy :(\n");
+                    console.log("");
+                    keepShopping();
                 }
             }
         })
+    })
+} // end of displayInfo()
+
+
+function keepShopping() {
+    inquirer.prompt([
+        {
+            type:"confirm",
+            message: "Would you like to continue shopping?",
+            name: "confirm"
+        }
+    ]).then(function(res) {
+        if (res.confirm) {
+            console.log("------------------------------------------------");
+            displayTable();
+            
+        } else {
+            console.log("");
+            console.log("Thank you for shopping at Candy Land!");
+            console.log("");
+            connection.end();
+        }
     })
 }
